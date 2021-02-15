@@ -8,16 +8,32 @@ def _conn_init():
     return sqlite3.connect(constants.DB_NAME)
 
 
-def main(user_params=150):
+def main(user_params=510):
+    loop_number = int(user_params / 100)
+    since_number = ''
+    if user_params > 100:
+        for count in range(loop_number):
+            r = call_and_persist_return("per_page=100", since_number)
+            try:
+                since_number = 'since={}'.format(r[99]['id'])
+            except IndexError as e:
+                since_number = ''
+        per_page = "per_page={}".format((user_params - (loop_number*100)))
+        call_and_persist_return(per_page, since_number)
+    else:
+        per_page = "per_page={}".format(user_params)
+        call_and_persist_return(per_page)
+
+
+def call_and_persist_return(per_page_param, since_number_param=''):
     url = 'https://api.github.com/users'
     headers = {'Authorization': 'token %s' % constants.API_AUTH_TOKEN}
 
-    pagination_count = user_params % 100
-    remaining_counts = user_params % 100
-    queries = 'per_page=100&since=%'
-    r = requests.get(url, headers=headers)
+    queries = "{}&{}".format(per_page_param, since_number_param)
+    complete_url = "{}?{}".format(url, queries)
+    r = requests.get(complete_url, headers=headers)
     _persist_users(r.json())
-
+    return r.json()
 
 
 def _persist_users(users):
@@ -28,7 +44,7 @@ def _persist_users(users):
         for user in users:
             sql = '''INSERT INTO GITHUB_USERS(USERNAME, ID, IMAGE_URL, TYPE, PROFILE_URL) 
             VALUES(?,?,?,?,?)
-            create table GITHUB_USERS(	USERNAME int,	ID int,	IMAGE_URL int,	TYPE int,	PROFILE_URL int);'''
+            '''
             cursor.execute(sql, (user['login'], int(user['id']), user['avatar_url'], user['type'], user['html_url']))
             conn.commit()
     except sqlite3.IntegrityError:
@@ -71,7 +87,7 @@ def _create_connection():
     conn = None
     try:
         conn = _conn_init()
-        print(sqlite3.version)
+        # print(sqlite3.version)
     except Error as e:
         print(e)
     finally:
