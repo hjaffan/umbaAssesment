@@ -28,7 +28,7 @@ def _persist_users(users):
         for user in users:
             sql = '''INSERT INTO GITHUB_USERS(USERNAME, ID, IMAGE_URL, TYPE, PROFILE_URL) 
             VALUES(?,?,?,?,?)
-            '''
+            create table GITHUB_USERS(	USERNAME int,	ID int,	IMAGE_URL int,	TYPE int,	PROFILE_URL int);'''
             cursor.execute(sql, (user['login'], int(user['id']), user['avatar_url'], user['type'], user['html_url']))
             conn.commit()
     except sqlite3.IntegrityError:

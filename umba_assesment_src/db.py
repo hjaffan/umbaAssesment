@@ -21,3 +21,10 @@ def close_db(e=None):
 
     if db is not None:
         db.close()
+
+
+def get_all_profiles(offset=0, per_page=10):
+    db = get_db()
+    users = db.execute('SELECT USERNAME, IMAGE_URL, TYPE, PROFILE_URL FROM GITHUB_USERS').fetchall()
+
+    return len(users), users[offset: offset + per_page]

@@ -6,12 +6,12 @@ from flask import Flask
 
 def create_app(test_config=None):
     # create and configure the app
-    app = Flask(__name__, instance_relative_config=True)
+    app = Flask(__name__, instance_relative_config=True, template_folder='templates')
     app.config.from_mapping(
         SECRET_KEY='dev',
         DATABASE=os.path.join(app.instance_path, constants.DB_NAME),
     )
-
+    print("string %s " % (os.path.join(app.instance_path, constants.DB_NAME)))
     if test_config is None:
         # load the instance config, if it exists, when not testing
         app.config.from_pyfile('config.py', silent=True)
@@ -24,7 +24,10 @@ def create_app(test_config=None):
         os.makedirs(app.instance_path)
     except OSError:
         pass
+    from . import profiles, home
 
+    app.register_blueprint(profiles.bp)
+    app.register_blueprint(home.bp)
     # a simple page that says hello
     @app.route('/hello')
     def hello():
