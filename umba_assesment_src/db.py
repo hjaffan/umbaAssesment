@@ -22,7 +22,7 @@ def close_db(e=None):
         db.close()
 
 
-def get_all_profiles(offset=0, per_page=10):
+def get_all_profiles(offset=0, per_page=25):
     db = get_db()
     users = db.execute('SELECT USERNAME, IMAGE_URL, TYPE, PROFILE_URL FROM GITHUB_USERS').fetchall()
 

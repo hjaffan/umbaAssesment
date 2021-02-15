@@ -1,11 +1,11 @@
 import functools
 import json
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, session, url_for
+    Blueprint, render_template
 )
-from werkzeug.security import check_password_hash, generate_password_hash
 
-from umba_assesment_src.db import get_db, get_all_profiles
+
+from umba_assesment_src.db import get_all_profiles
 
 bp = Blueprint('profiles', __name__, url_prefix='/profiles')
 
