@@ -1,6 +1,5 @@
 import os
 import umba_assesment_src.constants
-import umba_assesment_src.seed
 from flask import Flask
 
 
