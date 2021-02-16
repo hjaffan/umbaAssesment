@@ -66,9 +66,10 @@ class Seed:
             conn.close()
 
     def db_setup(self):
-        conn = self._create_connection()
+        conn = self._conn_init()
         cursor = conn.cursor()
         try:
+
             sql = '''CREATE TABLE IF NOT EXISTS GITHUB_USERS(
                USERNAME CHAR(50) NOT NULL,
                ID INT,

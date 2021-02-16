@@ -39,10 +39,8 @@ def create_app(test_config=None):
         pass
 
     from umba_assessment_flask import home
-    from umba_assessment_flask import startup
     from umba_assessment_flask import profiles
 
-    app.register_blueprint(startup.bp)
     app.register_blueprint(profiles.bp)
     app.register_blueprint(home.bp)
 
