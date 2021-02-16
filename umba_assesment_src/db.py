@@ -1,8 +1,13 @@
 import sqlite3
 
 from flask import current_app, g
+from umba_assesment_src import seed
 
 
+def init_db():
+    initial_db = seed.Seed(current_app.config['DATABASE'])
+    print(current_app.config['GITHUB_AUTH_KEY'])
+    initial_db.main(current_app.config['GITHUB_AUTH_KEY'], current_app.config['NUMBER_OF_USERS'])
 
 def get_db():
     if 'db' not in g:
