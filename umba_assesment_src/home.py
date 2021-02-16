@@ -1,7 +1,7 @@
 import functools
 import json
 from flask import (
-    Blueprint, render_template
+    Blueprint, render_template, current_app
 )
 
 from flask_paginate import Pagination, get_page_args
@@ -20,4 +20,4 @@ def home():
 
     pagination = Pagination(page=page, total=total,  per_page=per_page, css_framework='bootstrap4')
 
-    return render_template('homepage.html', index_table=users, pagination=pagination)
+    return render_template('homepage.html', index_table=users, pagination=pagination, per_page=per_page)

@@ -9,7 +9,8 @@ def create_app(test_config=None):
         SECRET_KEY='dev',
         DATABASE=os.path.join(app.instance_path, os.getenv('DB_NAME', '../instance/test.db')),
         GITHUB_AUTH_KEY=os.getenv('GITHUB_AUTH_TOKEN'),
-        NUMBER_OF_USERS=os.getenv('NUMBER_OF_USERS', 150)
+        NUMBER_OF_USERS=os.getenv('NUMBER_OF_USERS', 150),
+        PER_PAGE=os.getenv('PER_PAGE', 25)
     )
 
     if test_config is None:
