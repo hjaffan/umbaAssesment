@@ -1,1 +1,1 @@
-web: gunicorn umba_assesment_src:umba_assesment_src
+web: gunicorn "umba_assesment_src:create_app()"
