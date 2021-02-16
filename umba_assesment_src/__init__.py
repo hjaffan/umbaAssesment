@@ -25,9 +25,7 @@ def create_app(test_config=None):
         pass
     from . import profiles, home
 
-
     app.register_blueprint(profiles.bp)
     app.register_blueprint(home.bp)
-
 
     return app
