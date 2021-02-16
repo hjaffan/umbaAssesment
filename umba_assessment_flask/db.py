@@ -1,9 +1,8 @@
 import sqlite3
 
 from flask import current_app, g
-from umba_assessment_src import seed
+from umba_assessment_flask import seed
 
-# TODO: Invoke this from application startup
 def init_db(github_auth, database="../instance/test.db", number_of_users=150):
     initial_db = seed.Seed(database)
     initial_db.main(github_auth, number_of_users)

@@ -1,20 +1,15 @@
 import os
 from flask import Flask
-from umba_assessment_src import db
+
 
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True, template_folder='templates')
-    # TODO: Fail the application if GITHUB_AUTH_TOKEN not found
 
     database_path = os.path.join(app.instance_path, os.getenv('DB_NAME', '../instance/test.db'))
     github_auth_token = os.getenv('GITHUB_AUTH_TOKEN')
     number_of_users = os.getenv('NUMBER_OF_USERS', 150)
     per_page = os.getenv('PER_PAGE', 25)
-
-    if github_auth_token == "":
-        print("Github Auth Token not provided")
-        raise
 
     app.config.from_mapping(
         SECRET_KEY='dev',
@@ -25,8 +20,14 @@ def create_app(test_config=None):
     )
 
     if test_config is None:
+        from umba_assessment_flask import db
         # load the instance config, if it exists, when not testing
+        db.init_db(github_auth_token, database_path, number_of_users)
         app.config.from_pyfile('config.py', silent=True)
+
+        if github_auth_token == "":
+            print("Github Auth Token not provided")
+            raise
     else:
         # load the test config if passed in
         app.config.from_mapping(test_config)
@@ -37,10 +38,12 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    from umba_assessment_src import profiles, home, startup
+    from umba_assessment_flask import home
+    from umba_assessment_flask import startup
+    from umba_assessment_flask import profiles
+
     app.register_blueprint(startup.bp)
     app.register_blueprint(profiles.bp)
     app.register_blueprint(home.bp)
 
-    db.init_db(github_auth_token, database_path, number_of_users)
     return app

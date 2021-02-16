@@ -4,7 +4,7 @@ from flask import (
 
 from flask_paginate import Pagination, get_page_args
 
-from umba_assessment_src import db
+from umba_assessment_flask import db
 
 bp = Blueprint('home', __name__, url_prefix='/')
 

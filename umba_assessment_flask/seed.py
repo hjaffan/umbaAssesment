@@ -66,10 +66,9 @@ class Seed:
             conn.close()
 
     def db_setup(self):
-        self._create_connection()
+        conn = self._create_connection()
+        cursor = conn.cursor()
         try:
-            conn = self._conn_init()
-            cursor = conn.cursor()
             sql = '''CREATE TABLE IF NOT EXISTS GITHUB_USERS(
                USERNAME CHAR(50) NOT NULL,
                ID INT,
@@ -88,7 +87,7 @@ class Seed:
         conn = None
         try:
             conn = self._conn_init()
-            # print(sqlite3.version)
+            return conn
         except Error as e:
             print(e)
         finally:

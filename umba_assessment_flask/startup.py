@@ -2,7 +2,7 @@ from flask import (
     Blueprint
 )
 
-from umba_assessment_src import db
+from umba_assessment_flask import db
 
 bp = Blueprint('startup', __name__, url_prefix='/initialize')
 
