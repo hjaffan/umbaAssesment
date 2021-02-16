@@ -1,4 +1,4 @@
-# Umba Assesment
+# Umba Assessment
 
 ## Pre-requisites
 * Python version 3.8.2
