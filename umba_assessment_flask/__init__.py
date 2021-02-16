@@ -27,7 +27,7 @@ def create_app(test_config=None):
 
         if github_auth_token == "":
             print("Github Auth Token not provided")
-            raise
+            # raise
     else:
         # load the test config if passed in
         app.config.from_mapping(test_config)
