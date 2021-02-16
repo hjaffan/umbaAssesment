@@ -12,7 +12,7 @@ class Seed:
         return sqlite3.connect(self.db_name)
 
     def main(self, auth_token, number_of_users):
-        user_params = number_of_users
+        user_params = int(number_of_users)
         loop_number = int(user_params / 100)
         since_number = ''
         if user_params > 100:
