@@ -5,6 +5,7 @@ from flask import Flask
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True, template_folder='templates')
+    # TODO: Fail the application if GITHUB_AUTH_TOKEN not found
     app.config.from_mapping(
         SECRET_KEY='dev',
         DATABASE=os.path.join(app.instance_path, os.getenv('DB_NAME', '../instance/test.db')),

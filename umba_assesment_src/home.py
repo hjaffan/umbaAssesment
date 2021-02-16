@@ -1,7 +1,5 @@
-import functools
-import json
 from flask import (
-    Blueprint, render_template, current_app
+    Blueprint, render_template
 )
 
 from flask_paginate import Pagination, get_page_args

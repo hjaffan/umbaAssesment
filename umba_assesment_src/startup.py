@@ -1,10 +1,6 @@
-import functools
-import json
 from flask import (
-    Blueprint, render_template
+    Blueprint
 )
-
-from flask_paginate import Pagination, get_page_args
 
 from umba_assesment_src.db import init_db
 
