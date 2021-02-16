@@ -1,6 +1,6 @@
 import os
 import umba_assesment_src.constants
-
+import umba_assesment_src.seed
 from flask import Flask
 
 
@@ -26,6 +26,7 @@ def create_app(test_config=None):
         pass
     from . import profiles, home
 
+    seed.main() # Adding this function to pre-populate db
     app.register_blueprint(profiles.bp)
     app.register_blueprint(home.bp)
 

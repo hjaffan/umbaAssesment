@@ -1,0 +1,1 @@
+web: gunicorn umba_assesment_src:umba_assesment_src

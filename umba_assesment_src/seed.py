@@ -1,14 +1,15 @@
-import requests
-import constants
 import sqlite3
 from sqlite3 import Error
+import constants
+import requests
 
 
 def _conn_init():
     return sqlite3.connect(constants.DB_NAME)
 
 
-def main(user_params=510):
+def main():
+    user_params = constants.NUMBER_OF_USERS
     loop_number = int(user_params / 100)
     since_number = ''
     if user_params > 100:
@@ -28,15 +29,14 @@ def main(user_params=510):
 def call_and_persist_return(per_page_param, since_number_param=''):
     url = 'https://api.github.com/users'
     headers = {'Authorization': 'token %s' % constants.API_AUTH_TOKEN}
-
     queries = "{}&{}".format(per_page_param, since_number_param)
     complete_url = "{}?{}".format(url, queries)
     r = requests.get(complete_url, headers=headers)
-    _persist_users(r.json())
+    persist_users(r.json())
     return r.json()
 
 
-def _persist_users(users):
+def persist_users(users):
     db_setup()
     try:
         conn = _conn_init()
