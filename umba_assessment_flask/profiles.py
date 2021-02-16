@@ -1,5 +1,5 @@
 from flask import (
-    Blueprint
+    Blueprint, jsonify
 )
 import json
 from flask_paginate import get_page_args
@@ -16,4 +16,4 @@ def home():
 
     total, users = db.get_all_profiles(offset=offset, per_page=per_page)
 
-    return json.dumps(users)
+    return jsonify([dict(ix) for ix in users])
