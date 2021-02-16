@@ -2,12 +2,11 @@ from flask import (
     Blueprint
 )
 
-from umba_assesment_src.db import init_db
+from umba_assessment_src import db
 
 bp = Blueprint('startup', __name__, url_prefix='/initialize')
 
-
 @bp.route('/')
 def home():
-    init_db()
+    db.init_db()
     return "Application DB Populate"

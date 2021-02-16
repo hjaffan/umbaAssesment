@@ -4,7 +4,7 @@ from flask import (
 
 from flask_paginate import Pagination, get_page_args
 
-from umba_assesment_src.db import get_all_profiles
+from umba_assessment_src import db
 
 bp = Blueprint('home', __name__, url_prefix='/')
 
@@ -14,7 +14,7 @@ def home():
     page, per_page, offset = get_page_args(page_parameter='page',
                                            per_page_parameter='per_page')
 
-    total, users = get_all_profiles(offset=offset, per_page=per_page)
+    total, users = db.get_all_profiles(offset=offset, per_page=per_page)
 
     pagination = Pagination(page=page, total=total,  per_page=per_page, css_framework='bootstrap4')
 

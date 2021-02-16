@@ -1,15 +1,19 @@
 from flask import (
-    Blueprint, render_template
+    Blueprint
 )
+import json
+from flask_paginate import get_page_args
 
-
-from umba_assesment_src.db import get_all_profiles
+from umba_assessment_src import db
 
 bp = Blueprint('profiles', __name__, url_prefix='/profiles')
 
 # TODO: Implement a JSON response call with pagination
 @bp.route('/', methods=['GET'])
 def home():
-    users = get_all_profiles()
+    page, per_page, offset = get_page_args(page_parameter='page',
+                                           per_page_parameter='per_page')
 
-    return render_template('home.html', index_table=users)
+    total, users = db.get_all_profiles(offset=offset, per_page=per_page)
+
+    return json.dumps(users)
