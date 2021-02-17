@@ -79,24 +79,41 @@ def persist_users(users):
     try:
 
         for user in users:
-            sql = '''INSERT INTO GITHUB_USERS(USERNAME, ID, IMAGE_URL, TYPE, PROFILE_URL) 
-            VALUES(%s,%s,%s,%s,%s)
-            '''
-            cursor.execute(sql,
-                           (user['login'], int(user['id']), user['avatar_url'], user['type'], user['html_url']))
+
+            if postgres_enabled:
+                sql = '''INSERT INTO GITHUB_USERS(USERNAME, ID, IMAGE_URL, TYPE, PROFILE_URL) 
+                VALUES(%s,%s,%s,%s,%s)
+                '''
+            else:
+                sql = '''INSERT INTO GITHUB_USERS(USERNAME, ID, IMAGE_URL, TYPE, PROFILE_URL) 
+                VALUES(?,?,?,?,?)
+                '''
+            cursor.execute(sql, (user['login'], int(user['id']), user['avatar_url'], user['type'], user['html_url']))
             conn.commit()
     except db.IntegrityError:
-        sql_update = '''UPDATE GITHUB_USERS
-        SET USERNAME = %s,
-            ID = %s,
-            IMAGE_URL = %s,
-            TYPE = %s,
-            PROFILE_URL = %s
-        WHERE
-            ID = "%s"
-        ''' % int(user['id'])
+        conn.rollback()
+        if postgres_enabled:
+            sql_update = '''UPDATE GITHUB_USERS
+            SET USERNAME = %s,
+                ID = %s,
+                IMAGE_URL = %s,
+                TYPE = %s,
+                PROFILE_URL = %s
+            WHERE
+                ID = %s
+            '''
+        else:
+            sql_update = '''UPDATE GITHUB_USERS
+            SET USERNAME = ?,
+                ID = ?,
+                IMAGE_URL = ?,
+                TYPE = ?,
+                PROFILE_URL = ?
+            WHERE
+                ID = ?
+            '''
         cursor.execute(sql_update,
-                       (user['login'], int(user['id']), user['avatar_url'], user['type'], user['html_url'] ))
+                       (user['login'], int(user['id']), user['avatar_url'], user['type'], user['html_url'], int(user['id'])))
         conn.commit()
     finally:
         conn.close()
