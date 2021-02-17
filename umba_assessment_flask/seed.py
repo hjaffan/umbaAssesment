@@ -134,6 +134,7 @@ def db_setup():
         )
         '''
         cursor.execute(sql)
+        conn.commit()
     finally:
         cursor.close()
 
