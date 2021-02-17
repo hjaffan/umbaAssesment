@@ -9,16 +9,20 @@
   <thead>
     <tr>
       <th>#</th>
+      <th>GitHub ID</th>
       <th>Avatar</th>
       <th>Username</th>
+      <th>Type</th>
     </tr>
   </thead>
   <tbody>
     {% for user in index_table %}
       <tr>
         <td>{{ loop.index + pagination.skip }}</td>
+        <td>{{ user.0 }}</td>
         <td><img style="max-width: 50px; max-height: 50px" src="{{ user.2 }}"></td>
         <td><a href="{{ user.4 }}">{{ user.1 }}</a></td>
+        <td>{{ user.3 }}</td>
       </tr>
     {% endfor %}
   </tbody>
