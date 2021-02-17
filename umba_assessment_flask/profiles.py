@@ -26,6 +26,10 @@ def home():
     else:
         total, users = db.get_all_profiles(offset=offset, per_page=per_page)
         page_count = int(total / 100)
+
+    if page_count < 1:
+        page_count = 0
+
     user_json = []
     for user in users:
         us = {"id": user[0], "username": str(user[1]).strip(), "avatar": user[2], "type": str(user[3]).strip(),

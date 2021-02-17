@@ -82,7 +82,7 @@ In order to support local development we maintained support for SQLite
 ```
 {
     "page": 0,
-    "total_pages": 0.01,
+    "total_pages": 0,
     "profiles": [
         {
             "avatar": "https://avatars.githubusercontent.com/u/2?v=4",
