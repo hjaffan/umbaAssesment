@@ -16,6 +16,12 @@ def home():
     offset = request.args.get('offset')
     per_page = request.args.get('per_page')
 
+    if offset is None:
+        offset = 0
+
+    if per_page is None:
+        per_page = 25
+
     if int(per_page) > 100:
         per_page = 100
 
