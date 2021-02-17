@@ -1,23 +1,37 @@
 # Umba Assessment
 
+Easy to deploy application with support for Postgres or SQL lite for local development.
+
+
 ## Pre-requisites
 * Python version 3.8.2
 * Flask version 1.1.2
 * Environment Variables
     * GITHUB_AUTH_TOKEN (Required)
+    * DATABASE_TYPE (Optional default SQLite)
     * NUMBER_OF_USERS (Optional default=150)
-    * DB_NAME (Optional default=../instance/test.db)
-## Project Setup & Run
 
-1. `git clone https://github.com/hjaffan/umbaAssesment.git`
+## Project Setup & Run SQLite
+
+1. `git clone https://github.com/hjaffan/umbaAssessment.git`
 1. `pip install -r requirements.txt`
-1. execute ` gunicorn "umba_assesment_src:create_app()"` from repo directory
+1. Seed data by running `GITHUB_AUTH_TOKEN=<Your-Auth-Token-Here> python umba_assesment_flask/seed.py`
+1. execute ` gunicorn "umba_assesment_flask:create_app()"` from repo directory
 1. navigate to `http://<your-host-name/` You should see a view that displays the github users
 
+## Project Setup & Run Posgres
+
+1. `git clone https://github.com/hjaffan/umbaAssessment.git`
+1. `pip install -r requirements.txt`
+1. Seed data by running `GITHUB_AUTH_TOKEN=<Your-Auth-Token-Here> python umba_assesment_flask/seed.py`
+1. execute ` gunicorn "umba_assesment_flask:create_app()"` from repo directory
+1. navigate to `http://<your-host-name/` You should see a view that displays the github users
 
 ## Deploy on heroku
 
 1. Create a new heroku application
+1. Create a heroku postgres instance (Needed to persist the database)
+1. Create the following environment variables
 1. Add the heroku git remote
 1. git push heroku master
 1. navigate to `http://<your-host-name/` You should see a view that displays the github users
