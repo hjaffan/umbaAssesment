@@ -20,3 +20,18 @@ VALUES ("user4", 4, "https://images.google.l", "User", "https://github.com/profi
 
 INSERT INTO GITHUB_USERS (USERNAME, ID, IMAGE_URL, TYPE, PROFILE_URL)
 VALUES ("user5", 5, "https://images.google.l", "User", "https://github.com/profiles/user5");
+
+INSERT INTO GITHUB_USERS (USERNAME, ID, IMAGE_URL, TYPE, PROFILE_URL)
+VALUES ("someone1", 6, "https://images.google.l", "User", "https://github.com/profiles/someone1");
+
+INSERT INTO GITHUB_USERS (USERNAME, ID, IMAGE_URL, TYPE, PROFILE_URL)
+VALUES ("someone2", 7, "https://images.google.l", "User", "https://github.com/profiles/someone2");
+
+INSERT INTO GITHUB_USERS (USERNAME, ID, IMAGE_URL, TYPE, PROFILE_URL)
+VALUES ("someone3", 8, "https://images.google.l", "User", "https://github.com/profiles/someone3");
+
+INSERT INTO GITHUB_USERS (USERNAME, ID, IMAGE_URL, TYPE, PROFILE_URL)
+VALUES ("someone4", 9, "https://images.google.l", "User", "https://github.com/profiles/someone4");
+
+INSERT INTO GITHUB_USERS (USERNAME, ID, IMAGE_URL, TYPE, PROFILE_URL)
+VALUES ("someone5", 10, "https://images.google.l", "User", "https://github.com/profiles/someone5");

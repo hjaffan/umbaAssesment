@@ -16,7 +16,7 @@ def test_get_all_profiles(app):
 
         count, users = get_all_profiles()
 
-        assert count is 5
+        assert count is 10
 
 def test_get_single_user(app):
     with app.app_context():

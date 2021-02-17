@@ -1,21 +1,24 @@
 import os
 import tempfile
-
+import json
 import pytest
 
 import umba_assessment_flask
 
 
-@pytest.fixture
-def client():
-    db_fd, umba_assessment_flask.create_app.app.config['DATABASE'] = tempfile.mkstemp()
-    umba_assessment_flask.create_app.app.config['TESTING'] = True
+def test_profile(client):
+    rv = client.get('/profiles', follow_redirects=True)
 
-    with umba_assessment_flask.create_app.app.test_client() as client:
-        with umba_assessment_flask.create_app.app.app_context():
-            umba_assessment_flask.create_app.init_db()
-        yield client
+    data = json.loads(rv.data)
 
-    os.close(db_fd)
-    os.unlink(umba_assessment_flask.create_app.app.config['DATABASE'])
+    assert data[0]['USERNAME'] == "user1"
+    assert len(data) == 10
 
+
+def test_profile_search_user(client):
+    rv = client.get('/profiles?user=user5', follow_redirects=True)
+
+    data = json.loads(rv.data)
+
+    assert data[0]['USERNAME'] == "user5"
+    assert len(data) == 1
