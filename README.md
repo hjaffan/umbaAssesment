@@ -40,12 +40,81 @@ Easy to deploy application with support for Postgres or SQL lite for local devel
 ## Design Approach
 
 The current implementation of this application does the following.
-In order to operate this application, a DB population needs to occur. The approach taken here is an API endpoint was
-created to accomplish this. The reason for this approach is that we are SQL Lite. This is a file based DB, and needs to be created
-with every new deployment of the application. There were two ways to take this, either run the command via CLI,
-or doing it via an endpoint as done in this implementation. 
+Displays a list of Github users with their avatar and profile name and URL.
+Exposes and API that displays 100 profiles at a time
+Allows the developer to use two database types Postgres & SQLite
+Covers testing of DB / Home and Profile
 
-We have tried to make as much of the code configurable as possible to minimize the need to "recompile" code
+Why we chose to be multi-DB. In order to support deployment in Heroku, we felt we need to address the persistence question.
+Heroku works in an ephemeral system, so we had to move the data outside the container. 
+In order to support local development we maintained support for SQLite
 
-GITHUB_AUTH_TOKEN is a required variable, and the application will not work without it.
-Currently, the application will return a 500 ERROR.
+## API Docs
+
+### Base Request
+* request http://<your-host-here/profiles
+* response :
+```
+{
+    "page": 0,
+    "total_pages": 1, 
+    "profiles": [
+        {
+            "avatar": "https://avatars.githubusercontent.com/u/2?v=4",
+            "id": 2,
+            "profile": "https://github.com/defunkt",
+            "type": "User",
+            "username": "defunkt"
+        },
+        {
+            "avatar": "https://avatars.githubusercontent.com/u/3?v=4",
+            "id": 3,
+            "profile": "https://github.com/pjhyett",
+            "type": "User",
+            "username": "pjhyett"
+        },....
+  ]
+  }
+  ```
+### Request with User
+* request http://<your-host-here/profiles?user=defunkt
+* response :
+```
+{
+    "page": 0,
+    "total_pages": 0.01,
+    "profiles": [
+        {
+            "avatar": "https://avatars.githubusercontent.com/u/2?v=4",
+            "id": 2,
+            "profile": "https://github.com/defunkt",
+            "type": "User",
+            "username": "defunkt"
+        }
+    ]
+   
+    }
+  }
+  ```
+
+### Request with Page
+
+* request http://<your-host-here/profiles?page=1
+* response :
+```
+{
+    "page": 1,
+    "total_pages": 2,
+    "profiles": [
+        {
+            "avatar": "https://avatars.githubusercontent.com/u/2?v=4",
+            "id": 2,
+            "profile": "https://github.com/defunkt",
+            "type": "User",
+            "username": "defunkt"
+        }, ......
+    ]
+ 
+    }
+  }
+  ```
