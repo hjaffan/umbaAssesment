@@ -19,7 +19,7 @@ Easy to deploy application with support for Postgres or SQL lite for local devel
 1. execute ` gunicorn "umba_assesment_flask:create_app()"` from repo directory
 1. navigate to `http://<your-host-name/` You should see a view that displays the github users
 
-## Project Setup & Run Posgres
+## Project Setup & Run Postgres
 
 1. `git clone https://github.com/hjaffan/umbaAssessment.git`
 1. `pip install -r requirements.txt`
