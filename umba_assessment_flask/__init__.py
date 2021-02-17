@@ -23,7 +23,7 @@ def create_app(test_config=None):
         from umba_assessment_flask import db
         # load the instance config, if it exists, when not testing
 
-        db.init_db(github_auth_token, database_path, number_of_users)
+        # db.init_db(github_auth_token, database_path, number_of_users)
         app.config.from_pyfile('config.py', silent=True)
 
         if github_auth_token == "":

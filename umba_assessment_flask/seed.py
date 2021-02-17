@@ -1,7 +1,8 @@
 import sqlite3
 from sqlite3 import Error
 import requests
-
+import os
+from flask import Flask
 
 class Seed:
 
@@ -95,3 +96,12 @@ class Seed:
         finally:
             if conn:
                 conn.close()
+
+
+if __name__ == '__main__':
+    app = Flask(__name__, instance_relative_config=True, template_folder='templates')
+    db_name = os.path.join(app.instance_path, os.getenv('DB_NAME', '../instance/test.db'))
+    github_auth_token = os.getenv('GITHUB_AUTH_TOKEN')
+    number_of_users = os.getenv('NUMBER_OF_USERS', 150)
+    sd = Seed(db_name=db_name)
+    sd.main(github_auth_token, number_of_users)
