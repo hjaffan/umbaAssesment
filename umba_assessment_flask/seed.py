@@ -99,5 +99,5 @@ def _create_connection():
 
 
 if __name__ == '__main__':
-
+    _create_connection()
     main(github_auth_token, number_of_users)
