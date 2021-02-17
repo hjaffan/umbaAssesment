@@ -113,7 +113,7 @@ def persist_users(users):
                 ID = ?
             '''
         cursor.execute(sql_update,
-                       (user['login'], int(user['id']), user['avatar_url'], user['type'], user['html_url'], int(user['id'])))
+                       (str(user['login']).strip(), int(user['id']), str(user['avatar_url']).strip(), str(user['type']).strip(), str(user['html_url']).strip(), int(user['id'])))
         conn.commit()
     finally:
         conn.close()

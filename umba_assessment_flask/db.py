@@ -46,7 +46,7 @@ def close_db(e=None):
 def get_all_profiles(offset=0, per_page=25):
     db = get_db()
     cursor = db.cursor()
-    cursor.execute('SELECT USERNAME, IMAGE_URL, TYPE, PROFILE_URL FROM GITHUB_USERS')
+    cursor.execute('SELECT ID, USERNAME, IMAGE_URL, TYPE, PROFILE_URL FROM GITHUB_USERS')
     users = cursor.fetchall()
     return len(users), users[offset: offset + per_page]
 
@@ -55,7 +55,7 @@ def get_single_user(username):
     db = get_db()
     cursor = db.cursor()
     cursor.execute(
-        'SELECT USERNAME, IMAGE_URL, TYPE, PROFILE_URL FROM GITHUB_USERS WHERE USERNAME LIKE \'%{}%\''.format(
+        'SELECT ID, USERNAME, IMAGE_URL, TYPE, PROFILE_URL FROM GITHUB_USERS WHERE USERNAME LIKE \'%{}%\''.format(
             username))
     found_users = cursor.fetchall()
     return found_users

@@ -17,8 +17,8 @@
     {% for user in index_table %}
       <tr>
         <td>{{ loop.index + pagination.skip }}</td>
-        <td><img style="max-width: 50px; max-height: 50px" src="{{ user.1 }}"></td>
-        <td><a href="{{ user.3 }}">{{ user.0 }}</a></td>
+        <td><img style="max-width: 50px; max-height: 50px" src="{{ user.2 }}"></td>
+        <td><a href="{{ user.3 }}">{{ user.1 }}</a></td>
       </tr>
     {% endfor %}
   </tbody>
