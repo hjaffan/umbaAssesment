@@ -11,8 +11,8 @@ def test_profile(client):
 
     data = json.loads(rv.data)
 
-    assert data[0]['USERNAME'] == "user1"
-    assert len(data) == 10
+    assert data['profiles'][0]['username'] == "user1"
+    assert len(data['profiles']) == 10
 
 
 def test_profile_search_user(client):
@@ -20,5 +20,5 @@ def test_profile_search_user(client):
 
     data = json.loads(rv.data)
 
-    assert data[0]['USERNAME'] == "user5"
-    assert len(data) == 1
+    assert data['profiles'][0]['username'] == "user5"
+    assert len(data['profiles']) == 1

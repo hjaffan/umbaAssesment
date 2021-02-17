@@ -15,6 +15,7 @@ def home():
     username = request.args.get('user')
     page = 0
     per_page = 100
+    offset = 0
     if request.args.get('page'):
         page = int(request.args.get('page'))
         offset = page * 100
