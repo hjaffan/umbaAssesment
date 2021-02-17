@@ -10,12 +10,14 @@ def create_app(test_config=None):
     github_auth_token = os.getenv('GITHUB_AUTH_TOKEN')
     number_of_users = os.getenv('NUMBER_OF_USERS', 150)
     per_page = os.getenv('PER_PAGE', 25)
+    database_type = os.getenv('DATABASE_TYPE', 'sqlite')
 
     app.config.from_mapping(
         SECRET_KEY='dev',
         DATABASE=database_path,
         GITHUB_AUTH_KEY=github_auth_token,
         NUMBER_OF_USERS=number_of_users,
+        DATABASE_TYPE=database_type,
         PER_PAGE=per_page
     )
 

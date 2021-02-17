@@ -7,12 +7,15 @@ from flask import Flask, current_app
 
 app = Flask(__name__, instance_relative_config=True, template_folder='templates')
 
-if current_app.config['DATABASE_TYPE'] == 'postgresql':
-    import postgresql as db
-    from postgresql import Error
+if os.getenv('DATABASE_TYPE') == "postgres":
+    import psycopg2 as db
+    from psycopg2 import DataError as dberror
+    from urllib.parse import urlparse
+    postgres_enabled = True
 else:
-    from sqlite3 import Error
+    from sqlite3 import Error as dberror
     import sqlite3 as db
+    postgres_enabled = False
 
 
 db_name = os.path.join(app.instance_path, 'test.db')
@@ -21,7 +24,24 @@ number_of_users = os.getenv('NUMBER_OF_USERS', 150)
 
 
 def _conn_init():
-    return db.connect(db_name)
+    if postgres_enabled:
+        database_url = os.getenv('DATABASE_URL')
+        result = urlparse(database_url)
+        username = result.username
+        password = result.password
+        database = result.path[1:]
+        hostname = result.hostname
+        port = result.port
+        connection = db.connect(
+            database=database,
+            user=username,
+            password=password,
+            host=hostname,
+            port=port
+        )
+        return connection
+    else:
+        return db.connect(db_name)
 
 
 def main(auth_token, number_of_users):
@@ -60,23 +80,23 @@ def persist_users(users):
 
         for user in users:
             sql = '''INSERT INTO GITHUB_USERS(USERNAME, ID, IMAGE_URL, TYPE, PROFILE_URL) 
-            VALUES(?,?,?,?,?)
+            VALUES(%s,%s,%s,%s,%s)
             '''
             cursor.execute(sql,
                            (user['login'], int(user['id']), user['avatar_url'], user['type'], user['html_url']))
             conn.commit()
     except db.IntegrityError:
         sql_update = '''UPDATE GITHUB_USERS
-        SET USERNAME = ?,
-            ID = ?,
-            IMAGE_URL = ?,
-            TYPE = ?,
-            PROFILE_URL = ?
+        SET USERNAME = %s,
+            ID = %s,
+            IMAGE_URL = %s,
+            TYPE = %s,
+            PROFILE_URL = %s
         WHERE
             ID = "%s"
         ''' % int(user['id'])
         cursor.execute(sql_update,
-                       (user['login'], int(user['id']), user['avatar_url'], user['type'], user['html_url']))
+                       (user['login'], int(user['id']), user['avatar_url'], user['type'], user['html_url'] ))
         conn.commit()
     finally:
         conn.close()
@@ -107,7 +127,7 @@ def _create_connection():
     try:
         conn = _conn_init()
         return conn
-    except Error as e:
+    except dberror as e:
         print(e)
     finally:
         if conn:
