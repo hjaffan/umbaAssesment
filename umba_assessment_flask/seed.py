@@ -5,12 +5,14 @@ import os
 from flask import Flask
 
 app = Flask(__name__, instance_relative_config=True, template_folder='templates')
-db_name = os.path.join(app.instance_path, os.getenv('DB_NAME', '../instance/test.db'))
+db_name = os.path.join(app.instance_path, 'test.db')
 github_auth_token = os.getenv('GITHUB_AUTH_TOKEN')
 number_of_users = os.getenv('NUMBER_OF_USERS', 150)
 
+
 def _conn_init():
     return sqlite3.connect(db_name)
+
 
 def main(auth_token, number_of_users):
     user_params = int(number_of_users)
@@ -29,6 +31,7 @@ def main(auth_token, number_of_users):
         per_page = "per_page={}".format(user_params)
         call_and_persist_return(auth_token, per_page)
 
+
 def call_and_persist_return(auth_token, per_page_param, since_number_param=''):
     url = 'https://api.github.com/users'
     headers = {'Authorization': 'token %s' % auth_token}
@@ -38,12 +41,13 @@ def call_and_persist_return(auth_token, per_page_param, since_number_param=''):
     persist_users(r.json())
     return r.json()
 
+
 def persist_users(users):
     db_setup()
     conn = _conn_init()
+    cursor = conn.cursor()
     try:
-        conn = _conn_init()
-        cursor = conn.cursor()
+
         for user in users:
             sql = '''INSERT INTO GITHUB_USERS(USERNAME, ID, IMAGE_URL, TYPE, PROFILE_URL) 
             VALUES(?,?,?,?,?)
@@ -67,6 +71,7 @@ def persist_users(users):
     finally:
         conn.close()
 
+
 def db_setup():
     conn = _conn_init()
     cursor = conn.cursor()
@@ -85,6 +90,7 @@ def db_setup():
     finally:
         cursor.close()
 
+
 def _create_connection():
     """ create a database connection to a SQLite database """
     conn = None
@@ -99,5 +105,5 @@ def _create_connection():
 
 
 if __name__ == '__main__':
-
+    _create_connection()
     main(github_auth_token, number_of_users)
