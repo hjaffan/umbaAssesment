@@ -1,15 +1,18 @@
-import sqlite3
-
 from flask import current_app, g
 
 
+if current_app.config['DATABASE_TYPE'] == 'postgresql':
+    import postgresql as db
+else:
+    import sqlite3 as db
+
 def get_db():
     if 'db' not in g:
-        g.db = sqlite3.connect(
+        g.db = db.connect(
             current_app.config['DATABASE'],
-            detect_types=sqlite3.PARSE_DECLTYPES
+            detect_types=db.PARSE_DECLTYPES
         )
-        g.db.row_factory = sqlite3.Row
+        g.db.row_factory = db.Row
 
     return g.db
 

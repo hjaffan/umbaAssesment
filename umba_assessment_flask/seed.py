@@ -1,17 +1,27 @@
-import sqlite3
-from sqlite3 import Error
+
+
+
 import requests
 import os
-from flask import Flask
+from flask import Flask, current_app
 
 app = Flask(__name__, instance_relative_config=True, template_folder='templates')
+
+if current_app.config['DATABASE_TYPE'] == 'postgresql':
+    import postgresql as db
+    from postgresql import Error
+else:
+    from sqlite3 import Error
+    import sqlite3 as db
+
+
 db_name = os.path.join(app.instance_path, 'test.db')
 github_auth_token = os.getenv('GITHUB_AUTH_TOKEN')
 number_of_users = os.getenv('NUMBER_OF_USERS', 150)
 
 
 def _conn_init():
-    return sqlite3.connect(db_name)
+    return db.connect(db_name)
 
 
 def main(auth_token, number_of_users):
@@ -55,7 +65,7 @@ def persist_users(users):
             cursor.execute(sql,
                            (user['login'], int(user['id']), user['avatar_url'], user['type'], user['html_url']))
             conn.commit()
-    except sqlite3.IntegrityError:
+    except db.IntegrityError:
         sql_update = '''UPDATE GITHUB_USERS
         SET USERNAME = ?,
             ID = ?,
