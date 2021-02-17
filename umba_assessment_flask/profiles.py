@@ -22,6 +22,6 @@ def home():
         total, users = db.get_all_profiles(offset=offset, per_page=per_page)
     final_users = []
     for user in users:
-        us = {"username": user[0], "id": user[1], "image_url": user[2], "type": user[3], "profile_url": user[4]}
+        us = {"username": user[0]}
         final_users.append(us)
     return jsonify(final_users)
