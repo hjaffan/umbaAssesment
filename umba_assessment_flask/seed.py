@@ -9,7 +9,6 @@ class Seed:
         self.db_name = db_name
 
     def _conn_init(self):
-        print(self.db_name)
         return sqlite3.connect(self.db_name)
 
     def main(self, auth_token, number_of_users):
@@ -40,6 +39,7 @@ class Seed:
 
     def persist_users(self, users):
         self.db_setup()
+        conn = self._conn_init()
         try:
             conn = self._conn_init()
             cursor = conn.cursor()
